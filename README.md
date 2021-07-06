@@ -3,14 +3,14 @@
 我们制定了一整套的前端学习路径，并提供了团队真实场景作为实战练习。 团队挑选了几名资深前端开发工程师，作为这个项目的导师，帮助同学们快、准、好的开启前端发展之路～
 
 
-###要求
+### 要求
 完成[实战题目](https://www.yuque.com/yk2ebq/ysguk6/cwzsyq) 
 
 * 时限：不做强制要求，建议一个月内完成，根据自己的学习情况调整
 * 提交方式：提 pr 到[当前项目](https://github.com/dt-fe/dt-fe-training.git)，目录名称使用自己的名字
 
 
-###参加方式
+### 参加方式
 加入钉钉群，实战有问题时可以在群里讨论，提 pr 在群里通知一下~
 
 <img src="https://img.alicdn.com/imgextra/i1/O1CN01Yew34R1n6MrRGeLkh_!!6000000005040-2-tps-918-1258.png" width="60%">
