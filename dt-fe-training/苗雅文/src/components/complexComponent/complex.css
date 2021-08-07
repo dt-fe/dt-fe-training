@@ -1,0 +1,117 @@
+#main{
+    width: 100%;
+    background-color: white;
+    margin-top: 5px;
+    height: auto;
+}
+
+#top{
+    width: 100%;
+    background-color: white;
+    height: 40px;
+    line-height: 40px;
+}
+
+#top h4{
+    float: left;
+    padding-left: 25px;
+}
+
+hr{
+    color: "grey";
+    size: 1;
+}
+
+#middleCard{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+.card{
+    border: 1px solid rgb(241, 230, 230);
+    flex: 0 0 16.66%;
+    margin:0px -1px -1px 0px;
+    height: 110px;
+}
+
+.incard{
+    text-align: left;
+}
+
+/* .checkBox{
+    float: right;
+    padding: 5px, 5px, 0,0;
+}
+
+label{
+    cursor: pointer;
+    margin: 0;
+    vertical-align: middle;
+} */
+.checkBox:checked{
+    background:#1673ff
+}
+
+input{
+    float: right;
+}
+
+.checkBox {
+	width:15px;
+	height:15px;
+	background-color:#ffffff;
+	border:solid 1px #ffffff;
+	-webkit-border-radius:50%;
+	border-radius:50%;
+	font-size:0.8rem;
+	margin-left:0;
+	padding:10;
+	position:relative;
+	display:inline-block;
+	vertical-align:top;
+	cursor:default;
+	-webkit-appearance:none;
+	-webkit-user-select:none;
+	user-select:none;
+	-webkit-transition:background-color ease 0.1s;
+	transition:background-color ease 0.1s;
+}
+.checkBox:checked::after {
+	content:'';
+	top:3px;
+	left:3px;
+	position:absolute;
+	background:transparent;
+	border:#fff solid 2px;
+	border-top:none;
+	border-right:none;
+	height:5px;
+	width:8px;
+	-moz-transform:rotate(-45deg);
+	-ms-transform:rotate(-45deg);
+	-webkit-transform:rotate(-45deg);
+	transform:rotate(-45deg);
+}
+
+/* .card::before{
+    position: relative;
+    bottom: 40px;
+    content: "cc";
+    width: 1000px;
+    height: 5px;
+    background-color: chocolate;
+    z-index: 100;
+} */
+
+#cardbtw{
+    /* display: inline-block;
+    text-align: left;
+    vertical-align: middle; */
+    margin-top: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
