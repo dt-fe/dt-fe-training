@@ -1,25 +1,14 @@
-import React from 'react';
-import reactDom from 'react-dom';
 import './App.css';
 import Nav from './components/navComponent/nav'
-import Blank from './components/blank/blan';
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-
-class App extends React.Component {
-  render(){
+function App() {
   return (
     <div className="App">
-      {/* <BrowserRouter basename="/">
-      <Switch>
-        <Route path="/" component={Nav} />
-        <Route path="/other" component={Blank}/>
-      </Switch>
-    </BrowserRouter>, */}
-    <Nav></Nav>
+      <Nav />  
     </div>
   );
-  }
 }
 
 export default App;

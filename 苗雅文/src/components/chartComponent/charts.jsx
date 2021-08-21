@@ -3,18 +3,20 @@ import React from 'react';
 import "./charts.css"
 import * as echarts from 'echarts';
 // import echarts from 'echarts/lib/echarts'
-import { Card } from 'antd';
 import moment from 'moment';
-import { color } from 'echarts';
+
 
 
 class Chart extends React.Component {
     constructor(props) {
+        let current = moment().local("zh-cn").format("YYYY-MM-DD")
+        let weekAgo = moment().subtract(7, "days").format("YYYY-MM-DD")
         super(props);
         this.state = {
-            legendData: [],
+            // legendData: [],
             source: [],
-            series: []
+            series: [],
+            date:[current, weekAgo]//初始选中date，最近一周
         }
         this.getMaxLength = this.getMaxLength.bind(this);
     };
@@ -30,22 +32,19 @@ class Chart extends React.Component {
         return max;
     }
     changearr(oldarr) {
-        console.log(oldarr);
+        // console.log(oldarr);
         var maxLength = this.getMaxLength(oldarr);
         if (!maxLength) return oldarr
-        //console.log(maxLength);
-        var rowarr = [], rowoldarr = [];
+        var rowarr = []
         for (var k = 0; k < oldarr.length; k++) {
             for (var m = 0; m < maxLength; m++) {
                 if (!rowarr[m]) rowarr[m] = [];
                 rowarr[m].push(oldarr[k][m]);
-                if (!rowoldarr[m]) rowoldarr[m] = [];
-                rowoldarr[m].push(oldarr[k][m]);
             }
         }
-        //console.log(rowarr);
         return rowarr;
     }
+    //在加载成功前初始化图表占位
     initBarEcharts() {
         let myChart = echarts.init(document.getElementById('main'));
         let options = {
@@ -70,11 +69,17 @@ class Chart extends React.Component {
     componentWillMount() {
     }
 
-    componentDidUpdate(nextProps) {
+    componentDidUpdate(prevProps) {
         // console.log(this.state.source);
+        // if(this.props.options === []){
+        //     this.setState({
+        //         source: [],
+        //         series: []
+        //     })
+        // }
         let option = {
             title: {
-                subtext: `已选 ${this.props.options.length}/ ${nextProps.com.length}`,
+                subtext: `已选 ${this.props.options.length}/ ${prevProps.com.length}`,
                 right: 50
             },
             grid: {
@@ -110,10 +115,10 @@ class Chart extends React.Component {
             xAxis: {
                 show: 'false',
                 type: 'category',
-                axisLabel:{interval:0}
+                axisLabel:{interval:0} //这里是为了阻止echarts类目轴数字太多时，会隔一个显示一个
             },
             yAxis: {
-                axisLabel: {
+                axisLabel: {//这个设置是为了y轴不显示数字
                     formatter: function () {
                         return "";
                     }
@@ -127,23 +132,41 @@ class Chart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.options === []) {
+            this.setState({
+                source: [],
+                series: []
+            })
+        }
         if (this.props.idDates && this.props.date && this.props.idValues) {
             //以下操作获取props传值
             let date = new Array()
-            date = [nextProps.date[0], nextProps.date[1]]
+            if(nextProps != this.props.date){
+                date = [nextProps.date[0], nextProps.date[1]]
+                this.setState({
+                    date: nextProps.date
+                })
+            }
+            
             let legend = nextProps.idDates; //全部时间
             let leValue = nextProps.idValues;//全部的详细数据
-            //对选中的时间转时间戳
-            legend = legend.map((item) => {
-                return (
-                    moment(item).format().split("T")[0]
-                )
-            })
+            // console.log(legend);
+            console.log(leValue);
+            //对全部的时间转时间戳
+            if(legend){
+                legend = legend.map((item) => {
+                    return (
+                        moment(item).format().split("T")[0]
+                    )
+                })
+            }
+            
             //选中的时间在整个时间数组的位置，因此获取时间的
             let color = ['#5FABF9', '#FF9F4E', '#76D687', '#77E0DE', '#979CBD',
                 '#FFC159', '#EC78BE', '#4DB8FF', '#FC8474', '#D26FF5', '#FF715F', '#875B9B'];
             let series = [];
-            let i = legend.indexOf(date[0]), j = legend.indexOf(date[1]);
+            let i = legend.indexOf(date[0]), j = legend.indexOf(date[1]);//查找选中的时间
+            console.log(i,j);
             let datesel = legend.slice(i, j + 1);//获取选中的时间段
             let valuesel = [];
             for (let k = 0; k < this.props.com.length; k++) {
@@ -151,10 +174,13 @@ class Chart extends React.Component {
                 if (!tmp) {
                     tmp = [0]
                 }
+                
                 valuesel[k] = tmp.slice(i, j + 1)//获取选中时间段对应数据
+                // console.log(valuesel);
             };
-            let tmp = this.changearr(valuesel), valueChange = [];
-            console.log(tmp);
+            console.log(valuesel);
+            let tmp = this.changearr(valuesel), valueChange = [];//这里给数组横纵转换，以符合chartdata要求
+            // console.log(tmp);
             //这里筛选出来一个
             if (tmp) {
                 valueChange[0] = new Array()
@@ -164,40 +190,25 @@ class Chart extends React.Component {
                     valueChange[i + 1].push(datesel[i])
                     for (let j of nextProps.options) {
                         if (!valueChange[0].includes(this.props.com[j])) {
-                            valueChange[0].push(this.props.com[j])
-                            series.push({ type: 'line', smooth: 'true', symbol: 'none', color: color[j] })
+                            valueChange[0].push(this.props.com[j]) //这里在构成横坐标的数据
+                            series.push({ type: 'line', smooth: 'true', symbol: 'none', color: color[j] })//这里能保证color是一一对应不会改变的
                         }
-                        valueChange[i + 1].push(tmp[i][j])
+                        valueChange[i + 1].push(tmp[i][j])//这里填入选中时间对应的value数据
                     }
                 }
             }
+            // console.log(valueChange);
             this.setState({
                 source: valueChange,
                 series: series
             })
-            // console.log(series);
-            // console.log(valueChange);
-            //以下做series格式化  [ { type: 'line', smooth: 'true', color: '#5FABF9' }, {}]
-            //以下开始格式化数据符合source格式，然后传入echarts
-            // let valueDate = []
-            // valueDate[0] = datesel//日期永远排在最前面，用作product
-            // for (let k = 0; k < nextProps.options.length; k++) {
-            //     valueDate[k + 1] = valuesel[k]
-            // }
-
-            // let valChange = this.changearr(valueDate)//这里将数组扁平化赋值，以符合dataset的格式
-            // let com = []
-            // com[0] = ["product"].concat(this.props.com);//在数组第一行添加一个product元素以符合格式
-            // //将product的id元素与日期对应的数值合成数组
-            // for (let k = 0; k < datesel.length; k++) {
-            //     com[k + 1] = valChange[k]
-            // }
-            // console.log(com);
-            // console.log(nextProps.options);
-
         }
     }
-
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+          return;
+        };
+    }    
     render() {
         return (
             <div id="chart">

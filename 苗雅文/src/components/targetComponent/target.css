@@ -20,7 +20,9 @@ img{
     width: 30px;
     height: 30px;
 }
-#top{
+#topnav{
+    /* float: left; */
+    padding-left: 10px;
     width: 100%;
     background-color: white;
     height: 40px;

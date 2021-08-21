@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, Checkbox, Input, Divider, Card, Button, Table } from 'antd';
-import { SearchOutlined, CaretUpOutlined, RightCircleFilled } from '@ant-design/icons';
+import { SearchOutlined, CaretUpOutlined, RightCircleFilled,DownSquareOutline } from '@ant-design/icons';
 import { useState, useMemo, useRef, useEffect } from 'react';
 import "./target.css"
 import request from '../../fetch';
@@ -9,25 +9,17 @@ import index2 from "../../assets/img/index2.png"
 import index3 from "../../assets/img/index3.png"
 
 
-
 function IndexPage(props) {
-    // const options = [
-    //     { label: '总支付金额', value: '总支付金额' },
-    //     { label: '有效成交金额', value: '有效成交金额' },
-    //     { label: '客单价', value: '客单价' },
-    //     { label: '总利润', value: '总利润' },
-    // ];
-    (<button style={{ float:'right' }}>wrefwefd</button>)
-    const [show, setShow] = useState("hidden")
-    const [tmpvalue, setTmpvalue] = useState([])
-    const [sortIndex, setsortIndex] = useState([])
-    const [dataOption, setdataOption] = useState([])
-    const [allOption, setallOption] = useState()
-    const [options, setOptions] = useState([])
-    const [fetchData, setFetch] = useState([])
+    const [show, setShow] = useState("hidden")  //button按钮是否显示
+    const [tmpvalue, setTmpvalue] = useState([]) //存储这选中的指标
+    const [sortIndex, setsortIndex] = useState([])  //用来控制排名前三的特殊样式
+    const [dataOption, setdataOption] = useState([]) //以数组形式存储brr中的全部属性，这个用来做表格中的数据呈现
+    const [allOption, setallOption] = useState() //map将paymentAmount，paymentAmountPercentage存储成键值对
+    const [options, setOptions] = useState([]) //存储全部选项
+    const [fetchData, setFetch] = useState([]) //请求过来的数据
     const [date, setDate] = useState(props.date)
     const [open, setOpen] = useState()
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState([]);//存储暂时选中的指标，按确认后才会赋值给tmpvalue，按取消则不赋值
     const [inputValue, setInputValue] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [indeterminate, setIndeterminate] = useState(true);
@@ -37,15 +29,20 @@ function IndexPage(props) {
             method: 'get',
         })
             .then(data => {
-                let tmp = Object.keys(data.data[0]);
-                tmp.shift()
+                if(data.success === "false"){
+                    setFetch("概率性报错")
+                    setdataOption("报错了")
+                }
+                let tmp = Object.keys(data.data[0]);//这里获取data中对象数据的属性，因为每个对象属性相同，所以只获取第一个对象全部属性即可
+                tmp.shift()//name属性不可选，所以删除
                 let arr = []
                 for (let i = 0; i < tmp.length; i++) {
-                    arr.push({ label: tmp[i], value: tmp[i] })
+                    arr.push({ label: tmp[i], value: tmp[i] }) //arr存储下拉框中的所有可选项
                     i++
                 }
-                console.log(arr);
+                // console.log([arr[0].value]);
                 setOptions(arr)
+                // console.log(arr);
                 setFetch(data.data)
                 let brr = new Map();
                 for (let i = 0; i < tmp.length; i++) {
@@ -53,68 +50,57 @@ function IndexPage(props) {
                     i++
                 }
                 setallOption(brr)
+                setTmpvalue([arr[0].value])
+                setValue([arr[0].value])
+                
+                // console.log(brr);
+                // setTmpvalue([brr[0].key, brr[0].value])
                 let crr = [];
                 for (let i = 0; i < tmp.length; i++) {
                     crr.push(tmp[i])
                 }
-                setdataOption(crr)
+                setdataOption(crr)//以数组形式存储brr中的全部属性，这个用来做表格中的数据呈现
             }).catch((e) => {
                 return "概率性报错"
             })
-    }, [props.date])
-    console.log(allOption);
-    const columns = [
-    //     {
-    //     title: "排行",
-    //     dataIndex: "排行",
-    //     width: "2%",
-    //     colSpan: 2,
-    // },
-    {
-        title: '',
-        dataIndex: "排行",
-        width: "2%",
-        // colSpan: 2,
-        render:(text,record,index)=>{
-            if (index === 0 || index === 1 || index === 2) {
-                return sortIndex[index];
-            }
-            else {
-                return  `${index+1}`
-            }
-           
-    },
-      },
-    {
-        title: "排行",
-        dataIndex: "name",
-        width: "10%",
-        // colSpan: 1
-    }];
-    // for (let i = 0; i < value.length; i++) {
+    }, [date])
 
-    //     columns.push({
-    //         title: value[i],
-    //         dataIndex: value[i],
-    //         width: "5%",
-    //         fixed:"left"
-    //     })
-    //     columns.push({
-    //         title: "占比",
-    //         dataIndex: allOption.get(value[i]),
-    //         width: '10%',
-    //         sorter: {
-    //             compare: (a, b) => +a[allOption.get(value[i])].replace("%", "") - (+b[allOption.get(value[i])].replace("%", "")),
-    //         },
-    //     })
-    // }
-        for (let i = 0; i < tmpvalue.length; i++) {
+    useEffect(() => {
+        setDate(props.date)
+        console.log(props.date);
+    },[props.date])
+    // console.log(value);
+    const columns = [//这里先把表格中不可选的前两列填进去
+        {
+            title: '',
+            dataIndex: "排行",
+            width: "2%",
+            // colSpan: 2,
+            render: (text, record, index) => {
+                if (index === 0 || index === 1 || index === 2) {
+                    return sortIndex[index];
+                }
+                else {
+                    return `${index + 1}`
+                }
 
+            },
+        },
+        {
+            title: "排行",
+            dataIndex: "name",
+            width: "10%",
+            // colSpan: 1
+        }];
+        
+        console.log(allOption);
+        console.log(tmpvalue[0]);
+    for (let i = 0; i < tmpvalue.length; i++) {
         columns.push({
             title: tmpvalue[i],
             dataIndex: tmpvalue[i],
             width: "5%",
-            fixed:"left"
+            fixed: "left"
         })
         columns.push({
             title: "占比",
@@ -132,7 +118,7 @@ function IndexPage(props) {
         render: () => <a href="https://ant.design/index-cn">趋势</a>,
 
     })
-    useEffect(() => {
+    useEffect(() => {//每次请求的数据改变，都更新tmp，也就是sort，把前三名的特殊样式填进去
         let tmp = []
         for (let i = 0; i < fetchData.length; i++) {
             if (i === 0) {
@@ -147,41 +133,31 @@ function IndexPage(props) {
         }
         setsortIndex(tmp)
     }, [fetchData])
-    console.log(sortIndex);
+    // console.log(sortIndex);
 
-    const data = [];
+    const data = [];//填入表格的数据
     if (fetchData) {
         for (let i = 0; i < fetchData.length; i++) {
             let obj = {}
             obj["key"] = i + 1;
-            // if (i === 0 || i === 1 || i === 2) {
-            //     obj["排行"] = sortIndex[i];
-            // }
-            // else {
-            //     obj["排行"] = i + 1;
-            // }
-
             obj["name"] = fetchData[i].name;
             let j = 0
             while (j < dataOption.length) {
                 if (fetchData[i][dataOption[j]] < 1) { obj[dataOption[j]] = (fetchData[i][dataOption[j]] * 100).toFixed(2) + "%" } else {
-                    obj[dataOption[j]] = fetchData[i][dataOption[j]]
+                    obj[dataOption[j]] = fetchData[i][dataOption[j]]//添加新属性和新的数据
                 }
                 j++;
             }
             data.push(obj)
         }
     }
-    console.log(data);
+    // console.log(data);
 
     const displayOptions = useMemo(() => {
         return options.filter(option => option.label.includes(inputValue));
-    }, [inputValue, options])
-    console.log(options);
-    useEffect(() => {
-        setDate(props.date)
-    })
-    console.log(fetchData);
+    }, [inputValue, options])//这里做搜索过滤
+
+ 
     function Buttom() {
         return (
             <div style={{ paddingTop: '8px' }}>
@@ -194,19 +170,19 @@ function IndexPage(props) {
         )
     }
 
-    const onCheckAllChange = e => {
+    const onCheckAllChange = e => { //全选和取消
         let tmp = options.map((item) => {
             return item.value
         })
         setValue(e.target.checked ? tmp : [])
-        setIndeterminate(false);
+        setIndeterminate(false); //全选样式，增加不明确是否选取状态
         setCheckAll(e.target.checked);
     };
 
-    const onChange = list => {
+    const onChange = list => { 
         setValue(list);
         // setTmpvalue(list)
-        console.log(tmpvalue);
+        // console.log(tmpvalue);
         setIndeterminate(!!list.length && list.length < options.length);
         setCheckAll(list.length === options.length);
     };
@@ -241,15 +217,13 @@ function IndexPage(props) {
         setShow('hidden')
     }
     const onMouseOver = () => {
-         setShow('visible')
+        setShow('visible')
     }
 
-    const btnClick = ()=>{
+    const btnClick = () => {
         setValue([]);
         setTmpvalue([])
         setCheckAll(false)
-        // document.getElementsByTagName(Select).props.style.userSelect=("none")
-    //    console.log(document.getElementsByTagName(Select).props); 
     }
 
     const itemRender = (current, type, originalElement) => {
@@ -271,13 +245,13 @@ function IndexPage(props) {
     return (
         <div>
             <div id="select" >
-                <span style={{ zIndex:'10',position: 'relative', left: '46%', bottom: '10px' }} 
-                onMouseOver={onMouseOver} onMouseLeave={ onMouseLeave }>
-              {/* <Button onClick={btnClick} className="iconfont" size="small" style={{position: 'relative', left: '340px', bottom: '15px', zIndex: '1', border: "none", visibility: show }}>
+                <span style={{ zIndex: '10', position: 'relative', left: '46%', bottom: '10px' }}
+                    onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+                    {/* <Button onClick={btnClick} className="iconfont" size="small" style={{position: 'relative', left: '340px', bottom: '15px', zIndex: '1', border: "none", visibility: show }}>
                 &#xe63c;</Button> */}
-                <Button onClick={btnClick} className="iconfont" size="small" style={{position:'abosolute', zIndex: '1', border: "none", visibility: show, bottom:'10px' }}>
-                &#xe63c;</Button>
-                  </span>
+                    <Button onClick={btnClick} className="iconfont" size="small" style={{ position: 'abosolute', zIndex: '1', border: "none", visibility: show, bottom: '10px' }}>
+                        &#xe63c;</Button>
+                </span>
                 <Select
                     ref={inputEl}
                     mode="multiple"
@@ -325,7 +299,7 @@ function IndexPage(props) {
                 dataSource={data}
                 pagination={pagination1}
                 showSorterTooltip={false}
-                style={{ paddingTop:"50px" }}
+                style={{ paddingTop: "50px" }}
             />
         </div>
     );
@@ -335,7 +309,7 @@ function IndexPage(props) {
 function Target(props) {
     function top() {
         return (
-            <div id="top">
+            <div id="topnav">
                 <h4>分类目分析</h4>
             </div>
         )

@@ -2,7 +2,7 @@ import React from 'react';
 // import ReactDOM, { findDOMNode } from 'react-dom';
 import datalist from "../../nav.json";
 import "./nav.css";
-import { Router, Route, Link, BrowserRouter, Switch } from 'react-router-dom'
+import { Router, Route, Link, BrowserRouter, Switch} from 'react-router-dom'
 import moment from 'moment';
 
 import tradeURL from "../../assets/img/trade.svg";
@@ -10,10 +10,9 @@ import Data from '../dataComponent/data';
 import Complex from '../complexComponent/complex';
 import Chart from '../chartComponent/charts';
 import Target from '../targetComponent/target';
-import { TagsFilled } from '@ant-design/icons';
 
 
-
+const list = ["整体分析", "分类目分析"];
 
 class Leftnav extends React.Component {
   constructor(props) {
@@ -24,28 +23,27 @@ class Leftnav extends React.Component {
       date: [],
       idDates: [], //数据全部日期，一维数字[100]
       idValues: [0],//每个id对应的全部value[10][100]
-      select: "",//左侧
-      list:["整体分析", "分类目分析"],
-      li:["complex", "target"]
+      select:""//左侧
     }
   };
 
   sel(event) {  //这个用来做选中效果
     let lab = event.currentTarget.id;
+    // console.log("liab" + lab);
     this.setState({
-      lid: lab,
+      lid: lab
     })
+    // console.log("lid" + this.state.lid);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) { 
+    //这里可以改进一下，按照offset的高度列数组，再将左侧的dom存进另一个数组，当offet改变时，根据其数字大小找到对应的下标，再根据下标去dom数组里面查下标，改变其classname即可
     if (nextProps.offset < 500) {
-      this.setState({
-        lid:"li0"
-      })
+      document.getElementById('li1').className = ("selected")
+      document.getElementById('li2').className = ("")
     } else {
-      this.setState({
-        lid:"li1"
-      })
+      document.getElementById('li2').className = ("selected")
+      document.getElementById('li1').className = ("")
     }
   }
 
@@ -56,18 +54,21 @@ class Leftnav extends React.Component {
           <img id="asideimg" alt="svg图片，无特殊意义" src={tradeURL} ></img>
           <h4>交易</h4>
         </div>
-        <ul>
-          {
-            this.state.list.map((item, index) => {
-              return (
-                 <li id={"li"+index} className={this.state.lid === "li"+index ? "selected" : "null"}
-            onClick={(e) => {this.sel(e); this.props.scrollToAnchor(this.state.li[index])}}>
+        <ul>         
+       
+          <li id="li1" className={this.state.lid === this.id ? "selected" : "null"} 
+              onClick={(e) => this.sel(e), () => this.props.scrollToAnchor("complex")}>
             <span>
-              <a name="miao"><i className="iconfont icon-shuju"></i>{this.state.list[index]}</a></span>
+              <a name="miao"><i className="iconfont icon-shuju"></i>{list[0]}</a></span>
           </li>
-              )
-            })
-          }
+          <li id="li2" className={this.state.lid === this.id ? "selected" : "null"} 
+              onClick={(e) => this.sel(e), () => this.props.scrollToAnchor("target")} >
+            <span>
+              <a name="miao">
+                <i className="iconfont icon-shuju"></i>{list[1]}
+              </a>
+            </span>
+          </li>
         </ul>
       </div>
     )
@@ -134,6 +135,10 @@ class Nav extends React.Component {
   clearOption() { //清空选择
     this.setState({
       options: [],
+      // date:[0]
+    })
+    this.state.complex.setState({
+      check: []
     })
     this.state.complex.test()
   }
@@ -146,6 +151,7 @@ class Nav extends React.Component {
   }
 
   handleScroll() {
+    // console.log(window.pageYOffset);
     this.setState({
       offset: window.pageYOffset
     })
@@ -153,6 +159,8 @@ class Nav extends React.Component {
 
   scrollToAnchor(anchorName) {
     if (anchorName) {
+      // console.log(anchorName);
+      // 找到锚点
       let anchorElement = document.getElementById(anchorName);
       // 如果对应id的锚点存在，就跳转到锚点
       if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
@@ -165,18 +173,19 @@ class Nav extends React.Component {
   }
 
   render() {
-    return (
+    return (  
       <div className="nav">
         <div style={{ width: '100%', height: '50px' }}>
           <header id="header">
-            <ul className="box">
+            <ul className="box">       
               {
                 this.state.test.map((item, index) => { //用来展示导航栏
                   let tmp = item.group.map((m, i) => {
-                    if (m.name === "交易") {
-                      return (<Link to="/"> <li className={"sig" + i} key={m.id}>  {m.name}</li> </Link>)
-                    } else {
-                      return (<Link to="/other"> <li className={"sig" + i} key={m.id}>  {m.name}</li> </Link>)
+                    if(m.name === "交易")
+                    {
+                    return (<Link to="/"> <li className={"sig" + i} key={m.id}>  {m.name}</li> </Link> )
+                    }else{
+                    return (<Link to="/other"> <li className={"sig" + i} key={m.id}>  {m.name}</li> </Link> )
                     }
                   })
                   if (index === this.state.test.length - 1) return tmp;
@@ -216,8 +225,7 @@ class Nav extends React.Component {
               />
             </div>
             <div id="target">
-              <Target date={this.state.date}
-              idValues={this.state.idValues} />
+              <Target date={this.state.date} />
             </div>
             {/* <Input placeholder="请输入"/> */}
           </article>

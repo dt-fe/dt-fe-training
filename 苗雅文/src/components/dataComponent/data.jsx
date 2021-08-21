@@ -6,10 +6,8 @@ import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 
 
-
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-// const customFormat = value => `custom format: ${value.format(dateFormat)}`;
 
 class Data extends React.Component {
     constructor(props) {
@@ -19,23 +17,25 @@ class Data extends React.Component {
         };
         this.handleSelectTime = this.handleSelectTime.bind(this); //绑定函数this，这里不是箭头函数，需要绑定
     };
+
     handleSelectTime(value, dateString) {
         console.log('选择的时间：', dateString);
-        // this.setState({
-        //     data:[dateString[0],dateString[1]] 
-        // })
      this.props.getDate(dateString);
     }
 
+
+    current = moment().local("zh-cn").subtract(1, 'days').format("YYYY-MM-DD")
+    // current = moment().startOf('day').diff(moment().local("zh-cn").format("YYYY-MM-DD"), 'days') ===1
+    weekAgo = moment().subtract(7, "days").format("YYYY-MM-DD")
+    
+    componentWillMount(){
+        this.props.getDate([ this.weekAgo, this.current])
+    }
+
     disabledDate(current) {
-        // // Can not select days before today and today
-        // console.log(moment().startOf('day'));
-        // moment().startOf('day') < current &&
-        // current.diff(moment().startOf('day'), 'days');
-        console.log(moment().startOf('day') < current);
         return moment().startOf('day') < current || moment().startOf('day').diff(current, 'days') > 99;
       }
-
+      
     render() {
         // console.log(this.state.data);  
         return (
@@ -50,10 +50,10 @@ class Data extends React.Component {
                         suffixIcon={false}
                         onChange={this.handleSelectTime}//获取选中的时间，antd自带
                         disabledDate={this.disabledDate}
+                        defaultValue={[moment(this.current, dateFormat), moment(this.weekAgo, dateFormat)]}
                     />
                 </Space>
             </div>
-
         );
     }
 

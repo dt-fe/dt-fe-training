@@ -5,14 +5,14 @@
     height: auto;
 }
 
-#top{
+#topnav{
     width: 100%;
     background-color: white;
     height: 40px;
-    line-height: 40px;
+    line-height: 40px; 
 }
 
-#top h4{
+#topnav h4{
     float: left;
     padding-left: 25px;
 }
@@ -35,7 +35,7 @@ hr{
     border: 1px solid rgb(241, 230, 230);
     flex: 0 0 16.66%;
     margin:0px -1px -1px 0px;
-    height: 110px;
+    height: 120px;
 }
 
 .incard{
@@ -91,7 +91,7 @@ input{
 	border-right:none;
 	height:5px;
 	width:8px;
-	-moz-transform:rotate(-45deg);
+	-moz-transform:rotate(-45deg); 
 	-ms-transform:rotate(-45deg);
 	-webkit-transform:rotate(-45deg);
 	transform:rotate(-45deg);
