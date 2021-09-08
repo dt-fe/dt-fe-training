@@ -10,7 +10,6 @@ import Data from '../dataComponent/data';
 import Complex from '../complexComponent/complex';
 import Chart from '../chartComponent/charts';
 import Target from '../targetComponent/target';
-import { TagsFilled } from '@ant-design/icons';
 
 
 
@@ -108,7 +107,7 @@ class Nav extends React.Component {
 
   dateChange(value) { //获取选中的日期
     this.setState({ date: value }, () => {
-      console.log(this.state.date);
+      // console.log(this.state.date);
     });
   }
 
@@ -128,7 +127,7 @@ class Nav extends React.Component {
     this.setState({
       idValues: value
     })
-    console.log(this.state.idValues);
+    // console.log(this.state.idValues);
   }
 
   clearOption() { //清空选择
@@ -142,7 +141,7 @@ class Nav extends React.Component {
     this.setState({
       complex: ref
     })
-    console.log(ref);
+    // console.log(ref);
   }
 
   handleScroll() {

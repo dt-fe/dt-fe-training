@@ -4,6 +4,7 @@ import "./charts.css"
 import * as echarts from 'echarts';
 // import echarts from 'echarts/lib/echarts'
 import moment from 'moment';
+import { getKeyThenIncreaseKey } from 'antd/lib/message';
 
 
 
@@ -16,6 +17,7 @@ class Chart extends React.Component {
             // legendData: [],
             source: [],
             series: [],
+            myChart:"",
             date:[current, weekAgo]//初始选中date，最近一周
         }
         this.getMaxLength = this.getMaxLength.bind(this);
@@ -63,20 +65,15 @@ class Chart extends React.Component {
     }
 
     componentDidMount() {
-        var mychart = echarts.init(this.node)
+        this.setState({
+            myChart: echarts.init(this.node)
+        })
     }
 
     componentWillMount() {
     }
 
     componentDidUpdate(prevProps) {
-        // console.log(this.state.source);
-        // if(this.props.options === []){
-        //     this.setState({
-        //         source: [],
-        //         series: []
-        //     })
-        // }
         let option = {
             title: {
                 subtext: `已选 ${this.props.options.length}/ ${prevProps.com.length}`,
@@ -127,8 +124,7 @@ class Chart extends React.Component {
             series:
                 this.state.series
         }
-        var mychart = echarts.init(this.node)
-        mychart.setOption(option, true)
+        this.state.myChart.setOption(option, true)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -151,7 +147,7 @@ class Chart extends React.Component {
             let legend = nextProps.idDates; //全部时间
             let leValue = nextProps.idValues;//全部的详细数据
             // console.log(legend);
-            console.log(leValue);
+            // console.log(leValue);
             //对全部的时间转时间戳
             if(legend){
                 legend = legend.map((item) => {
@@ -166,7 +162,6 @@ class Chart extends React.Component {
                 '#FFC159', '#EC78BE', '#4DB8FF', '#FC8474', '#D26FF5', '#FF715F', '#875B9B'];
             let series = [];
             let i = legend.indexOf(date[0]), j = legend.indexOf(date[1]);//查找选中的时间
-            console.log(i,j);
             let datesel = legend.slice(i, j + 1);//获取选中的时间段
             let valuesel = [];
             for (let k = 0; k < this.props.com.length; k++) {
@@ -176,12 +171,9 @@ class Chart extends React.Component {
                 }
                 
                 valuesel[k] = tmp.slice(i, j + 1)//获取选中时间段对应数据
-                // console.log(valuesel);
             };
-            console.log(valuesel);
+            // console.log(valuesel);
             let tmp = this.changearr(valuesel), valueChange = [];//这里给数组横纵转换，以符合chartdata要求
-            // console.log(tmp);
-            //这里筛选出来一个
             if (tmp) {
                 valueChange[0] = new Array()
                 valueChange[0].push("pruduct")
@@ -197,7 +189,6 @@ class Chart extends React.Component {
                     }
                 }
             }
-            // console.log(valueChange);
             this.setState({
                 source: valueChange,
                 series: series

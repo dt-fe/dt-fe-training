@@ -53,8 +53,6 @@ function IndexPage(props) {
                 setTmpvalue([arr[0].value])
                 setValue([arr[0].value])
                 
-                // console.log(brr);
-                // setTmpvalue([brr[0].key, brr[0].value])
                 let crr = [];
                 for (let i = 0; i < tmp.length; i++) {
                     crr.push(tmp[i])
@@ -67,9 +65,7 @@ function IndexPage(props) {
 
     useEffect(() => {
         setDate(props.date)
-        console.log(props.date);
     },[props.date])
-    // console.log(value);
     const columns = [//这里先把表格中不可选的前两列填进去
         {
             title: '',
@@ -93,8 +89,8 @@ function IndexPage(props) {
             // colSpan: 1
         }];
         
-        console.log(allOption);
-        console.log(tmpvalue[0]);
+        // console.log(allOption);
+        // console.log(tmpvalue[0]);
     for (let i = 0; i < tmpvalue.length; i++) {
         columns.push({
             title: tmpvalue[i],
@@ -201,11 +197,11 @@ function IndexPage(props) {
         setValue(value)
         setTmpvalue(value)
         inputEl.current.blur()
-        console.log(inputEl.current);
+        // console.log(inputEl.current);
     }
     const onFocus = () => {
         setOpen(true)
-        console.log(inputEl.current);
+        // console.log(inputEl.current);
     }
 
     // const onMouseEnter = () => {
@@ -256,12 +252,8 @@ function IndexPage(props) {
                     ref={inputEl}
                     mode="multiple"
                     showArrow
-                    // disabled
                     placeholder='请选择相关内容'
                     onFocus={onFocus}
-                    // onMouseEnter={onMouseEnter}
-                    // onMouseLeave={onMouseLeave}
-                    // onMouseOver={onMouseOver}
                     open={open}
                     maxTagCount='responsive'
                     value={value}

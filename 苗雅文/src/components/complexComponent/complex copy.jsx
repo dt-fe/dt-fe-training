@@ -75,7 +75,7 @@ class ComplexCard extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps.options);
-    if (!nextProps.options.length) {
+    if (!nextProps.options.length){
       console.log("测试一下");
       let tmp = document.getElementsByClassName("show")
       for (let i = 0; i < tmp.length; i++) {

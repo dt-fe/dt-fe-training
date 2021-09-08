@@ -35,11 +35,13 @@ class ComplexCard extends React.Component {
     }
     this.test = this.test.bind(this)
     this.getDetailData = this.getDetailData.bind(this)
+    this.miao = this.miao.bind(this)
   }
 
   //checked用来控制check状态，check用来存储已经被选择的数量，也就是options
   complexCheck(e) {  //用来做复杂筛选框的选中
     let ck = e.currentTarget.id.split("t")[1], checkarr = this.state.check, checked = [], visib = []
+    console.log(e.target);
     for (let i in this.state.detailAll) {
       visib.push("hidden")
       checked.push(false)
@@ -77,12 +79,16 @@ class ComplexCard extends React.Component {
       visib.push("hidden")
       checked.push(false)
     }
-    // console.log("测试成虫");
+    console.log("测试成虫");
     this.setState({
       checked: checked,
       visib: visib,
       check: []
     })
+  }
+
+  miao() {
+    return 123123
   }
 
   getDetailData(details, arrowdown, arrowup) {
@@ -159,14 +165,42 @@ class ComplexCard extends React.Component {
           let visib = []
           let arrow = [];//用来存储所有的箭头指向
           let detailAll = [];//用来存储所有的details
-          let detailDate = this.getDetailData(details,arrowdown, arrowup)
-          idDates1 = detailDate[0]
-          idValues1 = detailDate[1]
-          detailAll = detailDate[2]
-          // console.log(detailAll);
-          arrow = detailDate[3]
-          checked = detailDate[4]
-          visib = detailDate[5]
+          details.forEach(detail => {
+            if (detail.err) {  //如果加载失败，将其数据填充为404，防止一个卡片报错影响全局加载
+              detail = {
+                success: "flase",
+                data: {
+                  "value": "404",
+                  "compareToLastDay": "0.404",
+                  "compareToLastWeek": "0.404",
+                  "datedValues": {
+                    "dates": [404],
+                    "values": [404]
+                  }
+                }
+              }
+            }
+
+            if (detail.data.value < 1) { //为value属性加百分号
+              detail.data.value = (detail.data.value * 100).toFixed(2) + "%"
+            }
+            let arrow0, arrow1;
+            arrow0 = detail.data.compareToLastDay.toString().split("")[0] === '-' ? arrowdown : arrowup; //判断正负号，决定上升还是下降
+            arrow1 = detail.data.compareToLastWeek.toString().split("")[0] === '-' ? arrowdown : arrowup;//判断正负号，决定上升还是下降
+            detail.data.compareToLastDay = arrow0 ? Math.abs(detail.data.compareToLastDay) : detail.data.compareToLastDay
+            detail.data.compareToLastWeek = arrow1 ? Math.abs(detail.data.compareToLastWeek) : detail.data.compareToLastWeek
+            detail.data.compareToLastDay = (detail.data.compareToLastDay * 100).toFixed(2) + "%"
+            detail.data.compareToLastWeek = (detail.data.compareToLastWeek * 100).toFixed(2) + "%"
+            if (detail.data.datedValues.dates[1]) {
+              idDates1.push(detail.data.datedValues.dates)
+            }//除非所有的url都有问题，否则一定能取到正确时间
+            //因为是一一对应，可以分开保存在两个数组中来对应，用一个i即可
+            idValues1.push(detail.data.datedValues.values)
+            detailAll.push(detail)
+            arrow.push([arrow0, arrow1])
+            checked.push(false)
+            visib.push("hidden")
+          });
           if (prevProps.date !== _this.props.date) {
             this.setState({
               idDates: idDates1[0],
@@ -218,6 +252,11 @@ class ComplexCard extends React.Component {
       const requests = com.map(id => getDetail(id))
       Promise.all(requests)// Promise.all并发处理所有的请求，防止数据加载顺序混乱
         .then(details => {
+          // let checked = [];
+          // let visib = []
+          // let arrow = [];//用来存储所有的箭头指向
+          // let detailAll = [];//用来存储所有的details
+
           let detailDate = []
           // console.log(this.getDetailData(details))
           detailDate = this.getDetailData(details,arrowdown, arrowup)
@@ -228,7 +267,47 @@ class ComplexCard extends React.Component {
           arrow = detailDate[3]
           checked = detailDate[4]
           visib = detailDate[5]
-         
+          // details.forEach((detail, index) => {
+          //   if (detail.err) {  //如果加载失败，将其数据填充为404，防止一个卡片报错影响全局加载
+          //     detail = {
+          //       success: "flase",
+          //       data: {
+          //         "value": "404",
+          //         "compareToLastDay": "0.404",
+          //         "compareToLastWeek": "0.404",
+          //         "datedValues": {
+          //           "dates": [404],
+          //           "values": [404]
+          //         }
+          //       }
+          //     }
+          //   }
+
+          //   if (detail.data.value < 1) { //为value属性加百分号
+          //     detail.data.value = (detail.data.value * 100).toFixed(2) + "%"
+          //   }
+          //   let arrow0, arrow1;
+
+          //   arrow0 = detail.data.compareToLastDay.toString().split("")[0] === '-' ? arrowdown : arrowup; //判断正负号，决定上升还是下降
+          //   arrow1 = detail.data.compareToLastWeek.toString().split("")[0] === '-' ? arrowdown : arrowup;//判断正负号，决定上升还是下降
+          //   detail.data.compareToLastDay = arrow0 ? Math.abs(detail.data.compareToLastDay) : detail.data.compareToLastDay
+          //   detail.data.compareToLastWeek = arrow1 ? Math.abs(detail.data.compareToLastWeek) : detail.data.compareToLastWeek
+          //   detail.data.compareToLastDay = (detail.data.compareToLastDay * 100).toFixed(2) + "%"
+          //   detail.data.compareToLastWeek = (detail.data.compareToLastWeek * 100).toFixed(2) + "%"
+          //   if (detail.data.datedValues.dates[1]) {
+          //     idDates1.push(detail.data.datedValues.dates)
+          //   }//除非所有的url都有问题，否则一定能取到正确时间
+          //   //因为是一一对应，可以分开保存在两个数组中来对应，用一个i即可
+          //   idValues1.push(detail.data.datedValues.values)
+          //   detailAll.push(detail)
+          //   arrow.push([arrow0, arrow1])
+          //   if(index === 0){
+          //     checked.push(true)
+          //   visib.push("visible")
+          //   }
+          //   checked.push(false)
+          //   visib.push("hidden")
+          // });
           this.setState({
             idDates: idDates1[0],
             idValues: idValues1,

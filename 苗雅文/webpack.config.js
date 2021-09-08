@@ -14,6 +14,7 @@ var config = {
         publicPath: './',
         filename: 'main.js'
     },
+    devtool: 'eval-source-map',
     mode: 'development',
     resolve: {
         extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']

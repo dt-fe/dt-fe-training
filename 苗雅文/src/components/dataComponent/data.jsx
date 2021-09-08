@@ -24,16 +24,20 @@ class Data extends React.Component {
     }
 
 
-    current = moment().local("zh-cn").subtract(1, 'days').format("YYYY-MM-DD")
+    yestoday = moment().local("zh-cn").subtract(1, 'days').format("YYYY-MM-DD")
     // current = moment().startOf('day').diff(moment().local("zh-cn").format("YYYY-MM-DD"), 'days') ===1
     weekAgo = moment().subtract(7, "days").format("YYYY-MM-DD")
     
     componentWillMount(){
-        this.props.getDate([ this.weekAgo, this.current])
+        this.props.getDate([ this.weekAgo, this.yestoday])
     }
 
+
     disabledDate(current) {
+        // return moment().startOf('day').diff(current, 'days') > 99;
         return moment().startOf('day') < current || moment().startOf('day').diff(current, 'days') > 99;
+        return moment().startOf('day') < current || moment().startOf('day').diff(current, 'days') > 99;
+        
       }
       
     render() {
@@ -42,7 +46,6 @@ class Data extends React.Component {
             <div id="dataContainer">
                 <Space id="space" direction="vertical" size={12}>
                     <RangePicker
-                        // defaultValue={[moment('2021/01/01', dateFormat), moment('2021/01/01', dateFormat)]}
                         format={dateFormat}
                         locale={locale}
                         allowClear={false}
@@ -50,8 +53,8 @@ class Data extends React.Component {
                         suffixIcon={false}
                         onChange={this.handleSelectTime}//获取选中的时间，antd自带
                         disabledDate={this.disabledDate}
-                        defaultValue={[moment(this.current, dateFormat), moment(this.weekAgo, dateFormat)]}
-                    />
+                        defaultValue={[moment(this.yestoday, dateFormat), moment(this.weekAgo, dateFormat)]}
+                   />
                 </Space>
             </div>
         );
