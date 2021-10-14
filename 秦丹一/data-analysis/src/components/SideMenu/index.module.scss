@@ -1,0 +1,67 @@
+
+.sidemenu {
+  position: fixed;
+  top: 48px;
+  min-height: 601px;//根据菜单多少调整长度，最小601
+  width: 160px;
+  background-color: #FFFFFF;
+
+  .sidemenu_deal {
+    // height: 111px;
+    padding: 24px 0;
+    text-align: center;
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    font-weight: 200;
+    color: #2062E6;
+  
+    .deal_icon {
+      width: 32px; 
+      height: 32px;
+    }
+  }
+  
+  .sidemenu_icon {
+    width: 14px;
+    height: 14px;
+  }
+
+}
+
+:global {
+  .ant-menu-title-content {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #999999;
+    line-height: 14px;
+  }
+  .ant-menu-item {
+    color: #1890ff;
+    width: 12px;
+    height: 12px;
+  }
+  .ant-menu-inline .ant-menu-item::after {
+    display: none;
+  }
+  
+  .ant-menu-inline .ant-menu-item::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-left: 3px solid #1890ff;
+    transform: scaleY(0.0001);
+    opacity: 0;
+    transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1),
+      opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+    content: '';
+  }
+  
+  .ant-menu-inline 
+  .ant-menu-item-selected::before {
+    transform: scaleY(1);
+    opacity: 1;
+    transition: transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1),
+      opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+}

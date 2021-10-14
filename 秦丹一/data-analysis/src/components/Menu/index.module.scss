@@ -1,0 +1,46 @@
+
+.menu {
+  position: fixed;
+  top: 0;
+  height: 48px;
+  width: 100vw;
+  background-color: #2062E6;
+  color: #FDFDFD;
+  font-style: 16px;
+  line-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+
+  .menu_list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .menu_item {
+      padding: 0 25px;             
+      cursor: pointer;
+      &:focus{
+        background-color:#6393f3;
+      }
+    }
+
+    &::after{
+      content: '';
+      height: 9px;
+      width: 2px;
+      margin: 0 25px;
+      background-color: rgba(255,255,255,.3);
+    }
+    
+    &:last-child::after {
+      display: none;
+    }
+  }
+}
+:global{
+    a{
+      color: #FDFDFD !important;
+    }
+}

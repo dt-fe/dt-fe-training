@@ -1,0 +1,26 @@
+.datebar {
+  position: fixed;
+  top: 48px;
+  left: 290px;
+  right: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: #FDFDFD;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.06);
+  z-index: 2;
+}
+
+:global{
+  .ant-picker-input > input {
+    text-align: center;
+    color: #666666 !important;
+  }
+  
+  .ant-picker-range-separator {
+    color: #666666;
+  }
+  
+  
+}

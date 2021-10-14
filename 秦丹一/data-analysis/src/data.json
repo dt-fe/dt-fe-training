@@ -1,0 +1,91 @@
+{
+  "indexList": [
+    {
+      "id": "paymentAmount",
+      "name": "支付下单金额",
+      "percentage": 0
+    },
+    {
+      "id": "userCount",
+      "name": "下单买家数",
+      "percentage": 0
+    },
+    {
+      "id": "pieceCount",
+      "name": "下单件数",
+      "percentage": 0
+    }
+  ],
+  "menuGroups": [
+    [
+      {
+        "key": "home",
+        "name": "首页"
+      },
+      {
+        "key": "realtime",
+        "name": "实时"
+      }
+    ],
+    [
+      {
+        "key": "stream",
+        "name": "流量"
+      },
+      {
+        "key": "commodity",
+        "name": "商品"
+      },
+      {
+        "key": "trade",
+        "name": "交易"
+      },
+      {
+        "key": "marketing",
+        "name": "营销"
+      },
+      {
+        "key": "service",
+        "name": "服务"
+      },
+      {
+        "key": "logistics",
+        "name": "物流"
+      },
+      {
+        "key": "finance",
+        "name": "财务"
+      }
+    ],
+    [
+      {
+        "key": "market",
+        "name": "市场"
+      },
+      {
+        "key": "race",
+        "name": "竞争"
+      }
+    ],
+    [
+      {
+        "key": "academy",
+        "name": "学院"
+      },
+      {
+        "key": "access",
+        "name": "取数"
+      }
+    ]
+  ],
+  "sideMenuList": [
+    {
+      "key": "all",
+      "name": "整体分析"
+    },
+    {
+      "key": "category",
+      "name": "分类目分析"
+    }
+  ]
+}
