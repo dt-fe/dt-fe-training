@@ -1,0 +1,129 @@
+.category_analysis {
+  margin-top: 100px;
+  left: 30px;
+
+  .list_item {
+    height: 36px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: Helvetica;
+    font-size: 12px;
+    color: #333333;
+    line-height: 36px;
+    border-bottom: 1px solid #F0F0F0;
+
+    .order_name {
+      width: 90px;
+      text-align: left;
+
+      .order {
+        display: inline-block;
+        width: 20px;
+        text-align: center;
+        margin-right: 5px;
+      }
+      
+      .champion_number {
+        display: inline-block;
+        position: relative;
+        
+        &>img {
+          width: 20px;
+          height: 20px;
+        }
+
+        &>span {
+          position: absolute;
+          top: 3px;
+          left: 6.5px;
+          font-size: 5px;
+          color: #FFFFFF;
+          z-index: 1;
+        }
+      }
+
+    }
+
+    .item_data {
+      width: 149px;
+      text-align: right;
+
+      .index_percentage {
+        display: inline-block;
+        width: 42px;
+        margin-left: 20px;
+        color: #999999;
+        text-align: right;
+
+      }
+
+      .move {
+        margin-right: -12px;
+        margin-left: 32px;
+      }
+  
+      .percentage_change{
+        margin-left: 3px;
+        display: inline-block;
+        vertical-align: middle;
+  
+        &>img {
+          display: block;
+          height: 10px;
+        }
+  
+        &>img:last-child {
+          margin-top: -3px;
+        }
+      }
+    }
+
+    .link {
+      color: #2062E6 !important;
+      text-decoration: none;
+    }
+  }
+
+  .list_footer {
+    margin-top: 19px;
+    text-align: right;
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #666666;
+    line-height: 14px;
+    
+    .neighbour_page {
+      margin: 0 5px;
+      font-family: Helvetica;
+      font-size: 14px;
+      color: #666666;
+      line-height: 14px;
+      cursor: pointer;
+
+      &>img {
+        margin-top: -2px;
+        width: 13px;
+        height: 13px;
+      }
+    }
+    .no_neighbour {
+      opacity: 0.6;
+    }
+
+    .page_number {
+      display: inline-block;
+      width: 20px;
+      height: 23px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    
+    .current_page {
+      border-bottom: 2px solid #0088FE;
+    }
+  }
+
+}

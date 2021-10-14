@@ -1,0 +1,61 @@
+body {
+  background-color: rgb(238, 240, 243);
+
+}
+
+.body {
+  padding: 0 120px;
+  display: flex;
+
+  .main {
+    position: absolute;
+    top: 108px;
+    left: 290px;
+    right: 120px;
+    flex: 1;
+
+    .overall {
+
+      .overall_title{
+        height: 52px;
+        padding-left: 30px;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #333333;
+        line-height: 52px;
+        background-color: #FDFDFD;
+      }
+
+      .overall_panel {
+        margin-top: 2px;
+        padding: 20px 30px; 
+        background-color: #FDFDFD;
+
+      }
+    }
+
+    .category {
+      margin-top: 10px;
+
+      .category_title {
+        height: 52px;
+        padding-left: 30px;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #333333;
+        line-height: 52px;
+        background-color: #FDFDFD;
+      }
+
+      .category_panel {
+        position: relative;
+        margin-top: 2px;
+        padding: 20px 28px; 
+        background-color: #FDFDFD;
+      }
+
+    }
+  }
+}
+
+
